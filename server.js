@@ -5,6 +5,12 @@ console.log("DB USER:", process.env.DB_USER);
 const express = require("express");
 const cors = require("cors");
 
+app.use(cors()); // <-- allow all origins
+// or, to be stricter:
+app.use(cors({
+  origin: "http://127.0.0.1:5500" // your frontend origin
+}));
+
 const userRoutes = require("./Routes/userRoutes");
 const authRoutes = require("./Routes/authRoutes");
 
