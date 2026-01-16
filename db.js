@@ -3,9 +3,9 @@ const mysql = require('mysql2');
 
 let db;
 
-if (process.env.MYSQL_URL) {
+if (process.env.DATABASE_URL) {
   // Railway gives a full URL like mysql://user:pass@host:port/db
-  const url = new URL(process.env.MYSQL_URL);
+  const url = new URL(process.env.DATABASE_URL);
   db = mysql.createConnection({
     host: url.hostname,
     user: url.username,

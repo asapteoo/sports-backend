@@ -9,9 +9,8 @@ const cors = require("cors");
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: "http://127.0.0.1:5500" // adjust if your frontend is elsewhere, or use origin: "*" to allow all
-}));
+// Allow all origins in production or specify your frontend origin for security
+app.use(cors()); 
 app.use(express.json());
 
 // Import routes
@@ -20,7 +19,7 @@ const authRoutes = require("./Routes/authRoutes");
 
 // Test route to check POST requests
 app.post("/test", (req, res) => {
-  console.log(req.body);
+  console.log("📥 /test hit with body:", req.body);
   res.json({ received: req.body });
 });
 
