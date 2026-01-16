@@ -16,11 +16,11 @@ app.use("/api/auth", authRoutes);
 
 // ROOT TEST
 app.get("/", (req, res) => {
-  res.send("Backend is alive");
+  res.send("SPORTS BACKEND API is running");
 });
 
 // START SERVER
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
