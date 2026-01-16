@@ -5,20 +5,18 @@ console.log("DB USER:", process.env.DB_USER);
 const express = require("express");
 const cors = require("cors");
 
-app.use(cors()); // <-- allow all origins
-// or, to be stricter:
-app.use(cors({
-  origin: "http://127.0.0.1:5500" // your frontend origin
-}));
-
-const userRoutes = require("./Routes/userRoutes");
-const authRoutes = require("./Routes/authRoutes");
-
+// Initialize app first
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "http://127.0.0.1:5500" // adjust if your frontend is elsewhere, or use origin: "*" to allow all
+}));
 app.use(express.json());
+
+// Import routes
+const userRoutes = require("./Routes/userRoutes");
+const authRoutes = require("./Routes/authRoutes");
 
 // Test route to check POST requests
 app.post("/test", (req, res) => {
