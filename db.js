@@ -1,30 +1,34 @@
-require("dotenv").config();
-const mysql = require("mysql2");
+require('dotenv').config();
+const mysql = require('mysql2');
 
 let db;
 
-if (process.env.MYSQL_URL) {
-  console.log("Using Railway MySQL");
-
-  const url = new URL(process.env.MYSQL_URL);
-
+if (process.env.DATABASE_URL) {
+  // Railway gives a full URL like mysql://user:pass@host:port/db
+  const url = new URL(process.env.DATABASE_URL);
   db = mysql.createConnection({
     host: url.hostname,
     user: url.username,
     password: url.password,
-    database: url.pathname.replace("/", ""),
-    port: url.port || 3306,
+    database: url.pathname.slice(1), // remove the leading /
+    port: url.port
   });
-
 } else {
-  console.log("⚠️ No MYSQL_URL found. DB disabled locally.");
+  // Local fallback
+  db = mysql.createConnection({
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'sports',
+    port: process.env.DB_PORT || 3306
+  });
 }
 
-db?.connect((err) => {
+db.connect((err) => {
   if (err) {
-    console.error("❌ DB connection failed:", err.message);
+    console.error('DB connection failed:', err);
   } else {
-    console.log("✅ Connected to MySQL");
+    console.log('Connected to MySQL database');
   }
 });
 
