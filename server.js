@@ -5,24 +5,22 @@ const cors = require("cors");
 
 const app = express();
 
-// Middleware
-app.use(cors()); // ✅ allow all origins
+// MIDDLEWARE (NO origin restriction while debugging)
+app.use(cors());
 app.use(express.json());
 
-// Routes
+// ROUTES
 const authRoutes = require("./Routes/authRoutes");
-const userRoutes = require("./Routes/userRoutes");
 
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
 
-// Health check
+// ROOT TEST
 app.get("/", (req, res) => {
-  res.send("Sports API running!");
+  res.send("Backend is alive");
 });
 
-// Start server
-const PORT = process.env.PORT || 8080;
+// START SERVER
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log("Server running on port", PORT);
 });
