@@ -5,11 +5,10 @@ const db = mysql.createConnection(process.env.MYSQL_URL);
 
 db.connect((err) => {
   if (err) {
-    console.error("DB connection failed:", err);
+    console.error("❌ DB connection failed:", err);
   } else {
-    console.log("Connected to Railway MySQL database");
+    console.log("✅ Connected to Railway MySQL");
   }
 });
 
 module.exports = db;
-
