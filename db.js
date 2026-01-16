@@ -1,34 +1,32 @@
-require('dotenv').config();
-const mysql = require('mysql2');
+require("dotenv").config();
+const mysql = require("mysql2");
 
-let db;
+// If using Railway MYSQL_URL
+// Example: mysql://user:password@host:port/dbname
+const DATABASE_URL = process.env.MYSQL_URL;
 
-if (process.env.DATABASE_URL) {
-  // Railway gives a full URL like mysql://user:pass@host:port/db
-  const url = new URL(process.env.DATABASE_URL);
-  db = mysql.createConnection({
-    host: url.hostname,
-    user: url.username,
-    password: url.password,
-    database: url.pathname.slice(1), // remove the leading /
-    port: url.port
-  });
-} else {
-  // Local fallback
-  db = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'sports',
-    port: process.env.DB_PORT || 3306
-  });
+if (!DATABASE_URL) {
+  console.error("❌ MYSQL_URL not found in environment variables!");
+  process.exit(1);
 }
 
+// Parse the URL
+const url = new URL(DATABASE_URL);
+
+const db = mysql.createConnection({
+  host: url.hostname,
+  user: url.username,
+  password: url.password,
+  database: url.pathname.replace("/", ""),
+  port: url.port || 3306,
+});
+
+// Connect
 db.connect((err) => {
   if (err) {
-    console.error('DB connection failed:', err);
+    console.error("❌ DB connection failed:", err);
   } else {
-    console.log('Connected to MySQL database');
+    console.log("✅ Connected to MySQL database");
   }
 });
 
